@@ -1,0 +1,29 @@
+version: '3'
+services:
+  jupyter:
+    container_name: ${COMPOSE_PROJECT_NAME}_jupyter-tf
+    build: 
+      context: docker/jupyter
+    
+    # binding ports between host and container
+    ports:
+      - 8888:8888
+    deploy:
+      resources:
+        reservations:
+          # To use local GPU
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    env_file:
+      - config/jupyter.env
+    
+    # binding volume between host and containers
+    volumes:
+      - C:\Users\djebali\Documents\Python_Scripts\NLP\Anime_NLP:/tf/project_anime
+  
+  redis:
+    image: redis:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+
